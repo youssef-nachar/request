@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit a Request</title>
+    <!-- Google Fonts Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #f0f4fd 0%, #e2e8f0 50%, #e0e7ff 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px 16px;
+            color: #0f172a;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Decorative Background Orbs */
+        .bg-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        .bg-orb-1 {
+            width: 320px;
+            height: 320px;
+            background: #3b82f6;
+            top: -50px;
+            left: -50px;
+        }
+
+        .bg-orb-2 {
+            width: 380px;
+            height: 380px;
+            background: #6366f1;
+            bottom: -80px;
+            right: -50px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 680px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Glassmorphism Card Style */
+        .card {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.08), 
+                        0 0 15px rgba(255, 255, 255, 0.5) inset;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .header .icon-wrapper {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #2563eb 0%, #4f46e5 100%);
+            border-radius: 18px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            margin-bottom: 16px;
+            box-shadow: 0 10px 20px -5px rgba(37, 99, 235, 0.4);
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #0f172a;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #64748b;
+            font-size: 15px;
+            font-weight: 400;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+            position: relative;
+        }
+
+        label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 13.5px;
+            color: #334155;
+            letter-spacing: 0.01em;
+        }
+
+        label svg {
+            color: #64748b;
+            width: 16px;
+            height: 16px;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-size: 14.5px;
+            font-family: inherit;
+            color: #0f172a;
+            background: #ffffff;
+            outline: none;
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+        }
+
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%3C%2364748b' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7' /%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            background-size: 18px;
+            padding-right: 40px;
+            cursor: pointer;
+        }
+
+        input:hover,
+        select:hover,
+        textarea:hover {
+            border-color: #cbd5e1;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #2563eb;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+            line-height: 1.5;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            border: none;
+            border-radius: 12px;
+            padding: 15px;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 8px 18px -4px rgba(37, 99, 235, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 12px 22px -4px rgba(37, 99, 235, 0.45);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .spinner {
+            display: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #ffffff;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .message {
+            display: none;
+            margin-top: 20px;
+            padding: 14px 16px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 500;
+            animation: fadeIn 0.3s ease-in-out;
+            line-height: 1.4;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.success {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: #f0fdf4;
+            color: #15803d;
+            border: 1px solid #bbf7d0;
+        }
+
+        .message.error {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: #fef2f2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+
+        .required {
+            color: #ef4444;
+            font-weight: bold;
+            margin-left: 2px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 22px;
+            color: #64748b;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        @media (max-width: 640px) {
+            .card {
+                padding: 24px 20px;
+                border-radius: 20px;
+            }
+
+            .row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+
+    <div class="container">
+
+        <div class="card">
+
+            <div class="header">
+                <div class="icon-wrapper">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                </div>
+                <h1>Submit a Request</h1>
+                <p>Please fill in the details below to submit your request</p>
+            </div>
+
+            <form id="requestForm">
+
+                <!-- Request Title -->
+                <div class="form-group">
+                    <label for="title">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/></svg>
+                        Request Title <span class="required">*</span>
+                    </label>
+
+                    <input type="text" id="title" maxlength="150" placeholder="e.g. AC Repair" required>
+                </div>
+
+                <!-- Type & Priority -->
+                <div class="row">
+
+                    <div class="form-group">
+                        <label for="type">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                            Request Type
+                        </label>
+
+                        <select id="type">
+                            <option value="Maintenance">Maintenance</option>
+                            <option value="Cleaning">Cleaning</option>
+                            <option value="Technical">Technical</option>
+                            <option value="Complaint">Complaint</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="priority">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                            Priority
+                        </label>
+
+                        <select id="priority">
+                            <option value="low">Low</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="high">High</option>
+                            <option value="urgent">Urgent</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <!-- Requester -->
+                <div class="form-group">
+                    <label for="requestedBy">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                        Name of Requester <span class="required">*</span>
+                    </label>
+
+                    <input type="text" id="requestedBy" maxlength="100" placeholder="Full Name" required>
+                </div>
+
+                <!-- Location Details -->
+                <div class="row">
+
+                    <div class="form-group">
+                        <label for="floor">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                            Floor
+                        </label>
+
+                        <input type="text" id="floor" maxlength="50" placeholder="e.g., 3rd Floor">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="apartment">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                            Apartment
+                        </label>
+
+                        <input type="text" id="apartment" maxlength="50" placeholder="Apartment No.">
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="room">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"/></svg>
+                        Room
+                    </label>
+
+                    <input type="text" id="room" maxlength="50" placeholder="Room Number or Name">
+                </div>
+
+                <!-- Description -->
+                <div class="form-group">
+                    <label for="description">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"/></svg>
+                        Request Details <span class="required">*</span>
+                    </label>
+
+                    <textarea id="description" maxlength="2000" placeholder="Type request details here..." required></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    <span class="spinner" id="btnSpinner"></span>
+                    <span id="btnText">Submit Request</span>
+                </button>
+
+            </form>
+
+            <div id="message" class="message"></div>
+
+        </div>
+
+        <div class="footer">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Your request will be recorded and sent to the requests department.
+        </div>
+
+    </div>
+
+    <!-- Firebase -->
+    <script type="module">
+
+        import {
+            initializeApp
+        } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+        import {
+            getFirestore,
+            collection,
+            addDoc,
+            serverTimestamp
+        } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+        // =========================================================
+        // Firebase configuration
+        // =========================================================
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDa9c8KhArVSz7tZz0IOM6_TsRJZa2GCuq",
+            authDomain: "foyer-nohad.firebaseapp.com",
+            databaseURL: "https://foyer-nohad-default-rtdb.firebaseio.com",
+            projectId: "foyer-nohad",
+            storageBucket: "foyer-nohad.firebasestorage.app",
+            messagingSenderId: "1007865928692",
+            appId: "1:1007865928692:web:843f27e83f0e3f204ef7a1",
+            measurementId: "G-FC5X4P9YTZ"
+        };
+
+
+        // =========================================================
+        // Firebase
+        // =========================================================
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+
+        // =========================================================
+        // IMPORTANT
+        // Exact path used by the existing Requests module:
+        //
+        // companies/foyer-nohad/request
+        //
+        // NOT:
+        // companies/foyer-nohad/requests
+        // =========================================================
+
+        const requestsCollection = collection(
+            db,
+            "companies",
+            "foyer-nohad",
+            "request"
+        );
+
+
+        // =========================================================
+        // DOM
+        // =========================================================
+
+        const form = document.getElementById("requestForm");
+        const submitBtn = document.getElementById("submitBtn");
+        const btnText = document.getElementById("btnText");
+        const btnSpinner = document.getElementById("btnSpinner");
+        const message = document.getElementById("message");
+
+
+        // =========================================================
+        // Message
+        // =========================================================
+
+        function showMessage(text, type) {
+
+            message.textContent = text;
+            message.className = "message " + type;
+
+        }
+
+
+        // =========================================================
+        // Submit
+        // =========================================================
+
+        form.addEventListener("submit", async function (event) {
+
+            event.preventDefault();
+
+            if (submitBtn.disabled) {
+                return;
+            }
+
+
+            // =====================================================
+            // Get values
+            // =====================================================
+
+            const title =
+                document.getElementById("title").value.trim();
+
+            const type =
+                document.getElementById("type").value.trim();
+
+            const priority =
+                document.getElementById("priority").value.trim();
+
+            const requestedBy =
+                document.getElementById("requestedBy").value.trim();
+
+            const floor =
+                document.getElementById("floor").value.trim();
+
+            const apartment =
+                document.getElementById("apartment").value.trim();
+
+            const room =
+                document.getElementById("room").value.trim();
+
+            const description =
+                document.getElementById("description").value.trim();
+
+
+            // =====================================================
+            // Validation
+            // =====================================================
+
+            if (!title) {
+
+                showMessage(
+                    "Please enter the request title.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            if (!requestedBy) {
+
+                showMessage(
+                    "Please enter the name of requester.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            if (!description) {
+
+                showMessage(
+                    "Please enter request details.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            // =====================================================
+            // Disable button & loader visual state
+            // =====================================================
+
+            submitBtn.disabled = true;
+            btnText.textContent = "Submitting...";
+            btnSpinner.style.display = "inline-block";
+
+
+            try {
+
+                // =================================================
+                // EXACT document structure expected by Firestore
+                // =================================================
+
+                const requestData = {
+
+                    title: title,
+
+                    type: type,
+
+                    priority: priority,
+
+                    status: "pending",
+
+                    requestedBy: requestedBy,
+
+                    floor: floor,
+
+                    apartment: apartment,
+
+                    room: room,
+
+                    dueDate: "",
+
+                    description: description,
+
+                    source: "external",
+
+                    createdBy: "external",
+
+                    createdAt: serverTimestamp(),
+
+                    updatedAt: serverTimestamp()
+
+                };
+
+
+                // =================================================
+                // Create Firestore document
+                // =================================================
+
+                const docRef = await addDoc(
+                    requestsCollection,
+                    requestData
+                );
+
+
+                // =================================================
+                // Success
+                // =================================================
+
+                console.log(
+                    "Request created successfully:",
+                    docRef.id
+                );
+
+
+                showMessage(
+                    "Request submitted successfully. Thank you!",
+                    "success"
+                );
+
+
+                // Reset form
+
+                form.reset();
+
+
+                // Restore defaults
+
+                document.getElementById("type").value =
+                    "Maintenance";
+
+                document.getElementById("priority").value =
+                    "medium";
+
+
+            } catch (error) {
+
+                console.error(
+                    "Error creating request:",
+                    error
+                );
+
+
+                // =================================================
+                // Firebase permission error
+                // =================================================
+
+                if (
+                    error &&
+                    (
+                        error.code === "permission-denied" ||
+                        error.code === "PERMISSION_DENIED"
+                    )
+                ) {
+
+                    showMessage(
+                        "Request denied by Firestore rules. Please check your Firestore Rules.",
+                        "error"
+                    );
+
+
+                } else {
+
+                    showMessage(
+                        "An error occurred while submitting the request: " +
+                        (error?.message || "Unknown error"),
+                        "error"
+                    );
+
+                }
+
+            } finally {
+
+                submitBtn.disabled = false;
+
+                btnText.textContent = "Submit Request";
+                btnSpinner.style.display = "none";
+
+            }
+
+        });
+
+    </script>
+
+</body>
+
+</html>
